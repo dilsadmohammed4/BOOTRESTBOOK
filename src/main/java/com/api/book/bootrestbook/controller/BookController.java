@@ -34,7 +34,7 @@ public class BookController {
         if (list.size() <= 0) {
             return ResponseEntity.status(HttpStatus.NOT_FOUND).build();
         }
-        return ResponseEntity.of(Optional.of(list));
+        return ResponseEntity.status(HttpStatus.CREATED).body(list);
 
     }
 
@@ -51,6 +51,7 @@ public class BookController {
 
     @PostMapping("/books")
     public ResponseEntity<Book> addBook(@RequestBody Book book) {
+        System.out.println("" + book);
 
         Book b = null;
         try {
@@ -80,10 +81,15 @@ public class BookController {
 
     // Update book handler
     @PutMapping("/books/{bookId}")
-    public Book updateBook(@RequestBody Book book, @PathVariable("bookId") int bookId) {
+    public ResponseEntity<Book> updateBook(@RequestBody Book book, @PathVariable("bookId") int bookId) {
 
-        this.bookService.updateBook(book, bookId);
-        return book;
+        try {
+            this.bookService.updateBook(book, bookId);
+            return ResponseEntity.ok().body(book);
+        } catch (Exception e) {
+            System.out.println(e.getMessage());
+            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).build();
+        }
     }
 
 }
