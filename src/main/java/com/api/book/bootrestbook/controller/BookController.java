@@ -26,10 +26,6 @@ public class BookController {
     // Get All Book
     @GetMapping("/books")
     public ResponseEntity<List<Book>> getBooks() {
-        // Book book = new Book();
-        // book.setId(1);
-        // book.setTitle("Java Devloper");
-        // book.setName("Dilsad Mohammed");
         List<Book> list = this.bookService.getAllBooks();
         if (list.size() <= 0) {
             return ResponseEntity.status(HttpStatus.NOT_FOUND).build();
